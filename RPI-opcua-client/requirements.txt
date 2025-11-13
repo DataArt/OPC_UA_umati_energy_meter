@@ -1,0 +1,12 @@
+# Core dependencies
+asyncua==1.1.5
+pyserial==3.5
+
+# Configuration management
+python-dotenv==1.0.0
+
+# Optional dependencies for enhanced features
+# Uncomment if needed:
+# pyyaml==6.0.1          # For YAML config files
+# requests==2.31.0       # For HTTP health checks
+# psutil==5.9.6          # For system monitoring

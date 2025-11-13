@@ -1,0 +1,61 @@
+services:
+  opcua-server:
+    build:
+      context: ./Sample-Server-node-opcua-develop
+    container_name: opcua-server
+    ports:
+      - "4840:4840"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/4840 && echo ok || exit 1'"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883"     # MQTT TCP
+      - "9001:9001"     # MQTT WebSockets
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'exec 3<>/dev/tcp/127.0.0.1/1883 && echo ok || exit 1'"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
+
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: umati_dashboard
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
+
+  umati-gateway:
+    image: ghcr.io/umati/umatigateway:develop
+    container_name: umati-gateway
+    depends_on:
+      - opcua-server
+      - mosquitto
+    ports:
+      - "8080:8080"   # Web-GUI gateway
+    volumes:
+      - ./umatiGatewayConfig.xml:/app/umatiGatewayConfig.xml:ro
+      - ./data:/app/data
+    restart: unless-stopped

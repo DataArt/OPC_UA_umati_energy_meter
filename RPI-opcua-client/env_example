@@ -1,0 +1,6 @@
+# Development settings
+# OPCUA_SERVER_URL=opc.tcp://localhost:4840/UA
+# PZEM_DEVICE=/dev/ttyUSB0
+# LOG_LEVEL=DEBUG
+# ENABLE_FILE_LOGGING=true
+# SAMPLE_INTERVAL=1.0

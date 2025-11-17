@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<umatiGatewayConfig version="2.0" logLevel="Debug">
+
+    <!-- Web interface; auto-connects DISABLED -->
+    <StartConfiguration
+            startWebUI="True"
+            startOPCConnection="False"
+            startMqttProvider="False"
+            startPubSubProvider="False" />
+
+    <WebUI url="http://0.0.0.0:8080" />
+
+    <!-- OPC UA -->
+    <OPCConnection
+            serverendpoint="opc.tcp://opcua-server:4840/UA"
+            authentication="None"
+            user=""
+            password=""
+            ReadExtraLibs="False"
+            certPath=""
+            certPassword="" />
+
+    <!-- Single MQTT provider (no autoconnect) -->
+    <MqttProvider
+            serverendpoint="wss://staging.umati.app/ws"
+            user="test/test_machine1"
+            password="test"
+            clientId="test/test_machine1"
+            prefix="umati/v2"
+            includeStructuredComponents="True"
+            upperCaseRange="False"
+            publishInterval="2000"
+            serverCertificatePath=""
+            customCaCertificatePath="">
+
+
+        <CustomEncodings>
+            <CustomEncoding name="GMSResultDataTypeEncoding" active="False" />
+            <CustomEncoding name="ProcessingCategoryDataTypeEncoding" active="False" />
+        </CustomEncodings>
+
+        <IgnoredPlaceholderTags>
+            <IgnoredPlaceholderTag name="&lt;ParameterIdentifier&gt;" />
+        </IgnoredPlaceholderTags>
+
+    </MqttProvider>
+
+</umatiGatewayConfig>

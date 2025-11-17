@@ -8,3 +8,4 @@ build/
 mosquitto/data/
 mosquitto/log/
 Sample-Server-node-opcua-develop/
+umatiGatewayConfig.xml
